@@ -1,0 +1,52 @@
+<div class="wrap">
+  <div class="wrap-search">
+    <div class="search">
+      <form class="search-form">
+        <div class="search-label">
+          <label for="search">
+            <input class="search-input" [(ngModel)]="searchQuery" name="search" placeholder="Search for images"
+              (keyup.enter)="searchImages(searchQuery)" />
+          </label>
+        </div><br>
+
+        <div class="wrap-button">
+          <button (click)="searchImages(searchQuery)" class="search-button" type="button">
+            Find
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <div class="search mobil-search">
+      <span>Items per page:</span>
+      <label>
+        <input class="search-input" [(ngModel)]="pageSize" placeholder="items" />
+      </label>
+    </div>
+  </div>
+
+  <div class="progress-bar" *ngIf="searching">
+    <mat-progress-bar mode="buffer"></mat-progress-bar>
+  </div>
+
+
+  <div class="wrap-result">
+    <h2 *ngIf="imagesFound">Results</h2>
+    <div class="result">
+      <div *ngFor="let image of images | paginate: { itemsPerPage: pageSize, currentPage: p }" class=image-container>
+        <a href="{{ image.pageURL }}" target="_bank">
+          <div class="avatar">
+            <img src="{{image.webformatURL}}">
+            <p>Name: {{ image.tags }}</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <ng-container class='empty-result' *ngIf="empty">
+      <div> No image found with your search criteria. Please change the search criteria.</div>
+    </ng-container>
+  </div>
+
+  <pagination-controls class="pagination" (pageChange)="p = $event"></pagination-controls>
+</div>
